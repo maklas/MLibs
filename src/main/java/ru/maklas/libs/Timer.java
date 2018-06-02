@@ -82,7 +82,7 @@ public class Timer {
      */
     public void reset(){
         currentTime = 0;
-        enabled = false;
+        enabled = true;
     }
 
     /**
