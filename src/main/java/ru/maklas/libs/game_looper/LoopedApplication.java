@@ -6,7 +6,7 @@ package ru.maklas.libs.game_looper;
 
 public interface LoopedApplication {
 
-    void onStart(LooperAccessor looper);
+    void onStart(Looper looper);
 
     void update(float dt);
 

@@ -3,7 +3,7 @@ package ru.maklas.libs.game_looper;
 /**
  * Created by amaklakov on 01.11.2017.
  */
-public interface LooperAccessor {
+public interface Looper {
 
     /**
      * Actual fps
@@ -16,7 +16,7 @@ public interface LooperAccessor {
     void exit();
 
     /**
-     * Whether this GameLoop is exiting atm
+     * Whether this GameLoop is exiting atm or already stopped
      */
     boolean isExiting();
 

@@ -4,7 +4,7 @@ package ru.maklas.libs.game_looper;
  * Created by maklas on 19.08.2017.
  */
 
-public class GameLooper extends Thread implements LooperAccessor {
+public class FixedFrameLooper extends Thread implements Looper {
 
     private static final float SEC_TO_NANO = 1000000000f;
     private final double loopTimeMillis;
@@ -12,7 +12,7 @@ public class GameLooper extends Thread implements LooperAccessor {
     private LoopedApplication app;
     private final Queue<Runnable> threadExecutionQueue;
 
-    public GameLooper(LoopedApplication app, int fps) {
+    public FixedFrameLooper(LoopedApplication app, int fps) {
         super();
         this.app = app;
         this.fps = fps;
@@ -22,7 +22,7 @@ public class GameLooper extends Thread implements LooperAccessor {
         this.loopTimeMillis = dt * 1000;
     }
 
-    public GameLooper(LoopedApplication app) {
+    public FixedFrameLooper(LoopedApplication app) {
         this(app, 60);
     }
 
