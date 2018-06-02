@@ -18,8 +18,7 @@ public class Counter {
     }
 
     /**
-     * Take the next number and increase internal counter
-     * @return
+     * Take the next number and increment internal counter
      */
     public int next(){
         final int valueToReturn = value++;
@@ -43,4 +42,11 @@ public class Counter {
         this.value = min;
     }
 
+    public int getMin() {
+        return min;
+    }
+
+    public int getMax() {
+        return max;
+    }
 }
