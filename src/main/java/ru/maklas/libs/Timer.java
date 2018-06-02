@@ -3,23 +3,33 @@ package ru.maklas.libs;
 
 /**
  * Created by maklas on 19.09.2017.
+ * Timer counts up from 0 to desired updateRate and triggers acton when updateRate has come
  */
 
 public class Timer {
 
-    private boolean triggered = false;
-    private float timer = 0;
-    private float time = 0;
+    private boolean enabled = true;
+    private boolean looped;
+    private float currentTime;
+    private float updateRate;
     private Action action;
 
-
+    /**
+     * Creates new looped Timer with update rate of 1 second and no action to trigger
+     */
     public Timer() {
-
+        this.updateRate = 1f;
+        this.looped = true;
     }
 
-    public Timer(float seconds, Action action) {
+    /**
+     * @param updateRate in seconds. How many times to trigger this action
+     * @param action will be enabled every updateRate is finished
+     */
+    public Timer(float updateRate, boolean looped, Action action) {
         this.action = action;
-        this.time = seconds;
+        this.updateRate = updateRate;
+        this.looped = looped;
     }
 
     public Timer setAction(Action action){
@@ -27,53 +37,74 @@ public class Timer {
         return this;
     }
 
-    public Timer setTime(float seconds){
-        this.time = seconds;
-        return this;
-    }
-
-    /**
-     * Resets time to 0 and enables if Action returned true last time
-     */
-    public Timer reset(){
-        timer = 0;
-        triggered = false;
-        return this;
-    }
-
-    /**
-     * Updates timer. Returns true if Action was triggered
-     */
-    public boolean update(float dt){
-        if (!triggered){
-            timer+=dt;
-
-            if (timer > time){
-                triggered = true;
-                if (action != null){
-                    if (action.execute()){
-                        reset();
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
     public Action getAction() {
         return action;
     }
 
+    public Timer setUpdateRate(float seconds){
+        this.updateRate = seconds;
+        return this;
+    }
+
+    public float getUpdateRate() {
+        return updateRate;
+    }
+
+    public float getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(float currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public boolean isLooped() {
+        return looped;
+    }
+
+    public void setLooped(boolean looped) {
+        this.looped = looped;
+    }
+
     /**
-     * Action that's going to be triggered later in time
+     * Whether this timer is enabled.
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
+     * Resets current time to 0 and enables Timer
+     */
+    public void reset(){
+        currentTime = 0;
+        enabled = false;
+    }
+
+    /**
+     * Updates currentTime. Returns true if Action was enabled
+     */
+    public void update(float dt){
+        if (!enabled) return;
+
+        currentTime += dt;
+        if (currentTime > updateRate){
+            currentTime -= updateRate;
+            if (action != null) action.execute();
+            if (!looped) enabled = false;
+        }
+    }
+
+    /**
+     * Action that's going to be enabled later in updateRate
      */
     public interface Action {
 
-        /**
-         * @return whether we should reset timer and lauch again
-         */
-        boolean execute();
+        void execute();
     }
 
 }
