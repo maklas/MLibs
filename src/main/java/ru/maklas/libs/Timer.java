@@ -8,11 +8,11 @@ package ru.maklas.libs;
 
 public class Timer {
 
-    private boolean enabled = true;
-    private boolean looped;
-    private float currentTime;
-    private float updateRate;
-    private Action action;
+    protected boolean enabled = true;
+    protected boolean looped;
+    protected float currentTime;
+    protected float updateRate;
+    protected Action action;
 
     /**
      * Creates new looped Timer with update rate of 1 second and no action to trigger
@@ -92,10 +92,13 @@ public class Timer {
         if (!enabled) return;
 
         currentTime += dt;
-        if (currentTime > updateRate){
+        while (currentTime > updateRate){
             currentTime -= updateRate;
             if (action != null) action.execute();
-            if (!looped) enabled = false;
+            if (!looped) {
+                enabled = false;
+                break;
+            }
         }
     }
 
